@@ -7,16 +7,16 @@ let link;
 let searchCityForm = document.querySelector("#search-city-form");
 let currentLocationButton = document.querySelector("#current-location-button");
 
-searchCityForm.addEventListener("submit", setCity);
+searchCityForm.addEventListener("submit", handleSubmit);
 currentLocationButton.addEventListener("click", getCurrentPosition);
-//  gauge
-const gaugeElement = document.querySelector(".gauge");
+
+let gaugeElement = document.querySelector(".gauge");
 
 function hideGaugeNumber(gauge, value) {
-    const gaugeNumberThree = gauge.querySelector(".three-uv");
-    const gaugeNumberSix = gauge.querySelector(".six-uv");
-    const gaugeNumberNine = gauge.querySelector(".nine-uv");
-    const gaugeNumberTwelve = gauge.querySelector(".twelve-uv");
+    let gaugeNumberThree = gauge.querySelector(".three-uv");
+    let gaugeNumberSix = gauge.querySelector(".six-uv");
+    let gaugeNumberNine = gauge.querySelector(".nine-uv");
+    let gaugeNumberTwelve = gauge.querySelector(".twelve-uv");
 
     function hideElement(element) {
         element.style.display = "none";
@@ -38,16 +38,16 @@ function hideGaugeNumber(gauge, value) {
 
 function setGaugeValue(value) {
     let gauge = document.querySelector(".gauge");
-    const gaugeFill = gauge.querySelector(".gauge-fill");
-    const gaugeText = gauge.querySelector(".gauge-text");
+    let gaugeFill = gauge.querySelector(".gauge-fill");
+    let gaugeText = gauge.querySelector(".gauge-text");
 
-    const maxUvIndex = 15;
-    const maxTurn = 0.5;
-    const maxPercent = 100;
+    let maxUvIndex = 15;
+    let maxTurn = 0.5;
+    let maxPercent = 100;
 
-    const turnsInOnePercent = maxTurn / maxPercent;
-    const percentsInOneUv = maxPercent / maxUvIndex;
-    const turnsInOneUv = percentsInOneUv * turnsInOnePercent;
+    let turnsInOnePercent = maxTurn / maxPercent;
+    let percentsInOneUv = maxPercent / maxUvIndex;
+    let turnsInOneUv = percentsInOneUv * turnsInOnePercent;
 
     if (value < 0 || value > 15) {
         return;
@@ -57,7 +57,6 @@ function setGaugeValue(value) {
     gaugeFill.style.transform = `rotate(${value * turnsInOneUv}turn)`;
     gaugeText.textContent = `${value}`;
 }
-// setGaugeValue(gaugeElement, 5);
 
 function setVerticalGauge(value, maxValue, element) {
     let gaugeHeight = 38;
@@ -68,8 +67,6 @@ function setVerticalGauge(value, maxValue, element) {
 
     element.style.transform = `translateY(${indent}px)`; 
 }
-
-// ==========================HOMEWORK WEEK 4======================================
 
 function removeActiveClass(element) {
     let previousSibling = element.previousElementSibling;
@@ -95,7 +92,6 @@ let weatherPeriodWrapper = document.querySelector(".weather-period-wrapper");
 changeTemperatureUnitWrapper.addEventListener("click", addActiveClass);
 weatherPeriodWrapper.addEventListener("click", addActiveClass);
 
-// ⏰Feature #1  In your project, display the current date and time using JavaScript: Tuesday 16:00
 function formatTime24H(time) {
     let hours = time.getHours();
     let minutes = time.getMinutes();
@@ -132,7 +128,6 @@ function formatTime12H(time) {
     return time
 }
 
-
 function showCurrentDate() {
     let currentWeekDay = document.querySelector("#current-week-day");
     let currentTime = document.querySelector("#current-time");
@@ -146,19 +141,12 @@ function showCurrentDate() {
         "Saturday",
     ];
 
-    // let currentDate = new Date();
     let weekDay = weekDays[currentDate.getDay()];
     let time = formatTime24H(currentDate);
     currentWeekDay.innerHTML = `${weekDay},`;
     currentTime.innerHTML = `${time}`;
 }
 showCurrentDate();
-
-// 🕵️‍♀️Feature #2 Add a search engine, when searching for a city (i.e. Paris), display the city name on the page after the user submits the form.
-
-// let tommorowDate = new Date();
-// tommorowDate = new Date(tommorowDate.setDate(tommorowDate.getDate() + 1));
-// console.log(currentDate, tommorowDate);
 
 function getCurrentPosition () {
     navigator.geolocation.getCurrentPosition(generateLink);
@@ -172,7 +160,7 @@ function getCurrentPosition () {
     }  
 }
 
-function setCity(event) {
+function handleSubmit(event) {
     event.preventDefault();
 
     let searchCityInput = document.querySelector("#search-city-input");
@@ -181,6 +169,7 @@ function setCity(event) {
     generateLinkByCity(city);
     searchCityInput.value = "";
 }
+
 
 function generateLinkByCity(city) {
     link = `https://api.openweathermap.org/data/2.5/weather?q=${city}&units=${units}&appid=${apiKey}`;
@@ -192,7 +181,6 @@ function generateLinkByCity(city) {
 
 function generateLinkByLocation(lat, lng) {
     link = `https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lng}&units=${units}&appid=${apiKey}`;
-    console.log(link);
     
     axios.get(link).then(getLocationName);
     axios.get(link).then(showWeather);
@@ -204,11 +192,8 @@ function defineCoordinates(response) {
 }
 
 function getLocationName(response) {
-    console.log(lat);
     let city = response.data.name;
-    console.log(city);
     let countryCode = response.data.sys.country;
-    console.log();
     let link = `https://restcountries.com/v3.1/alpha/${countryCode}`;
     let cityElement = document.querySelector("#city");
     
@@ -228,7 +213,7 @@ function showWeather(response) {
     showCurrentTemperature(response);
     showCloudiness(response);
     showFeelsLikeTemperature(response);
-    showUvIndex(response);
+    processUvIndex(response);
     showWindStatus(response);
     showSunriseSunsetTime(response);
     showHumidity(response);
@@ -267,7 +252,8 @@ function showCurrentTemperature(response) {
     temperatureElement.innerHTML = temperatute;
 }
 
-function showUvIndex(response) {
+function processUvIndex(response) {
+    let uv;
     let options = {
         method: "GET",
         url: `https://api.openuv.io/api/v1/uv?lat=${lat}&lng=${lng}dt=${currentDate}`,
@@ -276,11 +262,18 @@ function showUvIndex(response) {
         },
     };
 
-    axios.request(options).then((response) => {
-        let uv = Math.round(response.data.result.uv);
+    function showUV(uv) {
         let uvElement = document.querySelector("#uv-index");
         uvElement.innerHTML = uv;
         setGaugeValue(uvElement.innerHTML);
+    }
+
+    axios.request(options).then((response) => {
+        uv = Math.round(response.data.result.uv);
+        showUV(uv);
+    }).catch(() => {
+        uv = 3;
+        showUV(uv);
     });
 }
 
@@ -484,15 +477,8 @@ function showAirQuality(response) {
     setVerticalGauge(airQualityIndexElement.innerHTML, maxAirQualityIndex, airQualityGaugeCircle);
 }
 
+generateLinkByCity("Hamburg");
 
-
-// 🙀Bonus Feature Display a fake temperature (i.e 17) in Celsius and add a link to convert it to Fahrenheit. When clicking on it, it should convert the temperature to Fahrenheit. When clicking on Celsius, it should convert it back to Celsius.
-// + Убрать синий цвет после заполнения
-// + Убрать цвет бордера и закруглить его
-// + добавить иконку поиска слева
-// при нажатии на форму прятать кнопку поиска локации, иконку лупы и показать кнопку поиска
-// при нажатии на ентер убирать фокус и очищать форму
-// при нажатие в любом другом месте показывать кнопку поиска локации
 
 // 👨‍🏫 Your task
 // In your project, when a user searches for a city (example: New York),
