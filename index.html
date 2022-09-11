@@ -1,0 +1,456 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <script
+            crossorigin="anonymous"
+            src="https://kit.fontawesome.com/7f63ccbba0.js"
+        ></script>
+        <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+        <link
+            rel="stylesheet"
+            href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/css/bootstrap.min.css"
+        />
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+        <link
+            href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&family=Nunito:wght@200;300;400;500;600;700;800;900&display=swap"
+            rel="stylesheet"
+        />
+        <link rel="stylesheet" href="styles/style.css" />
+        <title>Weather dash</title>
+    </head>
+    <body>
+        <div class="weather-app-container">
+            <div class="weather-app-wrapper">
+                <div class="left-column-wrapper">
+                    <!-- <div class="search-city-wrapper">
+                        <input
+                            type="text"
+                            class="input-search-city"
+                            name="search-city-value"
+                            id="search-city-input"
+                            placeholder="Search for places..."
+                        />
+                    </div> -->
+                    <div class="search-panel-wrapper">
+                        <form
+                            class="search-city-wrapper active"
+                            id="search-city-form"
+                        >
+                            <div class="input-search-icon">
+                                <i
+                                    class="fa-solid fa-magnifying-glass magnifying-glass-icon"
+                                ></i>
+                            </div>
+                            <input
+                                type="text"
+                                name="search-city-value"
+                                id="search-city-input"
+                                placeholder="Search for places..."
+                            />
+                            <!-- <button class="search-location">
+                                <i
+                                class="fa-solid fa-magnifying-glass magnifying-glass-icon"
+                                ></i>
+                            </button> -->
+                        </form>
+                        <button id="current-location-button">
+                            <i
+                                class="fa-solid fa-crosshairs sub-title current-location-icon"
+                            ></i>
+                        </button>
+                    </div>
+
+                    <div class="current-weather-wrapper">
+                        <img
+                            src="img/icons/day/clear.svg"
+                            alt="weather icon"
+                            class="curent-weather-icon"
+                        />
+                        <div class="current-temperature-wrapper">
+                            <span class="current-temperature temperature"
+                                >12</span
+                            >
+                            <span class="current-temperature-scale">°C</span>
+                        </div>
+
+                        <div class="current-date title">
+                            <span id="current-week-day">Monday,</span>
+                            <span class="light-text-color" id="current-time">
+                                16:00
+                            </span>
+                        </div>
+
+                        <div class="about-today-weather-wrapper">
+                            <div class="about-today-weather-text">
+                                <img
+                                    src="img/icons/day/cloudy.svg"
+                                    alt="cloudiness"
+                                />
+                                <span class="main-text" id="cloudiness">Clear</span>
+                            </div>
+
+                            <div class="about-today-weather-text">
+                                <img
+                                    src="img/icons/day/feel_like.svg"
+                                    alt="chance of rain"
+                                    class="chance-of-rain"
+                                />
+                                <span class="main-text" id = "feels-like">Feels like 12°</span>
+                            </div>
+                        </div>
+
+                        <div class="viewed-city-wrapper">
+                            <img
+                                src="img/background/city.png"
+                                alt="viewed-city"
+                                class="viewed-city-image"
+                            />
+                            <div class="vieved-city-name title" id="location">
+                                <span id="city">Hamburg</span>,
+                                <span id="country">Germany</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="right-column-wrapper">
+                    <nav>
+                        <div class="weather-period-wrapper">
+                            <span class="weather-period title light-text-color">
+                                Today
+                            </span>
+                            <span
+                                class="weather-period title light-text-color active"
+                            >
+                                Week
+                            </span>
+                        </div>
+
+                        <div class="change-temperature-unit-wrapper">
+                            <button
+                                class="change-temperature-unit-item sub-title active"
+                                id="show-in-celsius-button"
+                            >
+                                °C
+                            </button>
+                            <button
+                                class="change-temperature-unit-item sub-title"
+                                id="show-in-fahrenheit-button"
+                            >
+                                °F
+                            </button>
+                        </div>
+                    </nav>
+
+                    <div class="period-weather-information-wrapper">
+                        <div class="part-of-period-information">
+                            <div class="day sub-title">Mon</div>
+                            <div class="icon">
+                                <img
+                                    src="img/icons/day/clear.svg"
+                                    alt="clear"
+                                />
+                            </div>
+                            <div class="temperature">
+                                <span class="temperature max main-text">
+                                    12°
+                                </span>
+                                <span class="temperature min main-text">
+                                    -7°
+                                </span>
+                            </div>
+                        </div>
+
+                        <div class="part-of-period-information">
+                            <div class="day sub-title">Tue</div>
+                            <div class="icon">
+                                <img
+                                    src="img/icons/day/partly_cloudy.svg"
+                                    alt="partly cloudy"
+                                />
+                            </div>
+                            <div class="temperature">
+                                <span class="temperature max main-text">
+                                    9°
+                                </span>
+                                <span class="temperature min main-text">
+                                    7°
+                                </span>
+                            </div>
+                        </div>
+
+                        <div class="part-of-period-information">
+                            <div class="day sub-title">Wed</div>
+                            <div class="icon">
+                                <img
+                                    src="img/icons/day/rainy.svg"
+                                    alt="rainy"
+                                />
+                            </div>
+                            <div class="temperature">
+                                <span class="temperature max main-text">
+                                    8°
+                                </span>
+                                <span class="temperature min main-text">
+                                    -1°</span
+                                >
+                            </div>
+                        </div>
+
+                        <div class="part-of-period-information">
+                            <div class="day sub-title">Thu</div>
+                            <div class="icon">
+                                <img
+                                    src="img/icons/day/snowy.svg"
+                                    alt="snowy"
+                                />
+                            </div>
+                            <div class="temperature">
+                                <span class="temperature max main-text">
+                                    5°
+                                </span>
+                                <span class="temperature min main-text">
+                                    -2°
+                                </span>
+                            </div>
+                        </div>
+
+                        <div class="part-of-period-information">
+                            <div class="day sub-title">Fri</div>
+                            <div class="icon">
+                                <img
+                                    src="img/icons/day/cloudy.svg"
+                                    alt="cloudy"
+                                />
+                            </div>
+                            <div class="temperature">
+                                <span class="temperature max main-text">
+                                    4°
+                                </span>
+                                <span class="temperature min main-text">
+                                    -4°
+                                </span>
+                            </div>
+                        </div>
+
+                        <div class="part-of-period-information">
+                            <div class="day sub-title">Sat</div>
+                            <div class="icon">
+                                <img
+                                    src="img/icons/day/rainy.svg"
+                                    alt="rainy"
+                                />
+                            </div>
+                            <div class="temperature">
+                                <span class="temperature max main-text">
+                                    3°
+                                </span>
+                                <span class="temperature min main-text">
+                                    -3°
+                                </span>
+                            </div>
+                        </div>
+
+                        <div class="part-of-period-information">
+                            <div class="day sub-title">Sun</div>
+                            <div class="icon">
+                                <img
+                                    src="img/icons/day/clear.svg"
+                                    alt="clear"
+                                />
+                            </div>
+                            <div class="temperature">
+                                <span class="temperature max main-text">
+                                    15°
+                                </span>
+                                <span class="temperature min main-text">
+                                    -3°
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="today-highlights-wrapper">
+                        <div class="title">Today's Highlights</div>
+                        <div class="today-highlights-list">
+                            <div class="today-highlights-item">
+                                <div class="sub-title light-text-color">
+                                    UV Index
+                                </div>
+                                <div class="gauge">
+                                    <span class="three-uv main-text">3</span>
+                                    <span class="six-uv main-text">6</span>
+                                    <span class="nine-uv main-text">9</span>
+                                    <span class="twelve-uv main-text">12</span>
+                                    <div class="gauge-body">
+                                        <div class="gauge-contour"></div>
+                                        <div class="gauge-fill"></div>
+                                        <div class="gauge-cover">
+                                            <div
+                                                class="today-highlights-item-number gauge-text" id = "uv-index"
+                                            ></div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="today-highlights-item">
+                                <div class="sub-title light-text-color">
+                                    Wind status
+                                </div>
+                                <div
+                                    class="today-highlight-item-number__wrapper-down"
+                                >
+                                    <span class="today-highlights-item-number" id="wind-speed"
+                                        >7.70</span
+                                    >
+                                    <span class="large-text">km/h</span>
+                                </div>
+                                <div class="today-highlights-item-info">
+                                    <div class="compass-wrapper">
+                                        <div class="compass"></div>
+                                    </div>
+                                    <div class="large-text" id = "wind-dirrection">SW</div>
+                                </div>
+                            </div>
+                            <div class="today-highlights-item">
+                                <div class="sub-title light-text-color">
+                                    Sunrise & Sunset
+                                </div>
+                                <div class="today-highlights-item-info">
+                                    <i
+                                        class="fa-solid fa-arrow-up sunrise-icon"
+                                    ></i>
+                                    <div class="time">
+                                        <div class="time-today main-text" id = "sunrise-time">
+                                            6:35 AM
+                                        </div>
+                                        <!-- <div
+                                            class="time-difference-from-yesterday small-text light-text-color"
+                                        >
+                                            - 1m 46s
+                                        </div> -->
+                                    </div>
+                                </div>
+                                <div class="today-highlights-item-info">
+                                    <i
+                                        class="fa-solid fa-arrow-down sunset-icon"
+                                    ></i>
+                                    <div class="sub-title time">
+                                        <div class="time-today main-text" id = "sunset-time">
+                                            5:42 PM
+                                        </div>
+                                        <!-- <div
+                                            class="time-difference-from-yesterday small-text light-text-color"
+                                        >
+                                            + 2m 22s
+                                        </div> -->
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="today-highlights-item">
+                                <div class="sub-title light-text-color">
+                                    Humidity
+                                </div>
+                                <div
+                                    class="today-highlights-item-info item-info-with-vertical-gauge"
+                                >
+                                    <div
+                                        class="today-highlight-item-number__wrapper-up"
+                                    >
+                                        <div
+                                            class="today-highlights-item-number" id="humidity"
+                                        >
+                                            12
+                                        </div>
+                                        <div class="large-text" id = "humidity-scale">%</div>
+                                    </div>
+
+                                    <div class="vertical-gauge" id = "humidity-gauge">
+                                        <div
+                                            class="vertical-gauge-circle" id = "humidity-gauge-circle"
+                                        ></div>
+                                    </div>
+                                </div>
+                                <div class="today-highlights-item-info">
+                                    <span class="large-text" id = "humidity-quality-name"> Normal </span>
+                                    <span class="emoji">
+                                        <img
+                                            src="img/icons/emoji/thums-up.svg"
+                                            id = "humidity-emoji"
+                                            alt="thums up"
+                                        />
+                                    </span>
+                                </div>
+                            </div>
+                            <div class="today-highlights-item">
+                                <div class="sub-title light-text-color">
+                                    Visibility
+                                </div>
+                                <div
+                                    class="today-highlight-item-number__wrapper-down"
+                                >
+                                    <div class="today-highlights-item-number" id="visibility">
+                                        5.2
+                                    </div>
+                                    <div class="large-text">km</div>
+                                </div>
+                                <div class="today-highlights-item-info">
+                                    <span class="large-text" id = "visibility-quality-name"> Average </span>
+                                    <span class="emoji">
+                                        <img
+                                            src="img/icons/emoji/neutral-face.svg"
+                                            id = "visibility-emoji"
+                                            alt="emoji"
+                                        />
+                                    </span>
+                                </div>
+                            </div>
+                            <div class="today-highlights-item">
+                                <div class="sub-title light-text-color">
+                                    Air Quality
+                                </div>
+                                <div
+                                    class="today-highlights-item-info item-info-with-vertical-gauge"
+                                >
+                                    <div
+                                        class="today-highlight-item-number__wrapper-up"
+                                    >
+                                        <div
+                                            class="today-highlights-item-number" id = "air-quality-index"
+                                        >
+                                            105
+                                        </div>
+                                    </div>
+
+                                    <div
+                                        class="air-quality-gauge vertical-gauge"
+                                    >
+                                        <div
+                                            class="vertical-gauge-circle" id = "air-quality-gauge-circle"
+                                        ></div>
+                                    </div>
+                                </div>
+                                <div class="today-highlights-item-info">
+                                    <span class="large-text" id = "air-quality-name"> Unhealthy </span>
+                                    <span class="emoji">
+                                        <img
+                                            src="img/icons/emoji/thums-down.svg"
+                                            id="air-quality-emoji"
+                                            alt="thums up"
+                                        />
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <script src="js/index.js"></script>
+    </body>
+</html>
