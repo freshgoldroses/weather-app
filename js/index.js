@@ -265,7 +265,7 @@ function processUvIndex(response) {
     function showUV(uv) {
         let uvElement = document.querySelector("#uv-index");
         uvElement.innerHTML = uv;
-        setGaugeValue(uvElement.innerHTML);
+        return setGaugeValue(uvElement.innerHTML);
     }
 
     axios.request(options).then((response) => {

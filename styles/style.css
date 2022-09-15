@@ -50,11 +50,17 @@ body {
     border-bottom: 2px solid var(--black);
 }
 
-.weather-app-container {
+.app-wrapper {
     display: flex;
+    flex-direction: column;
     align-items: center;
+    justify-content: center;
     height: 100vh;
-    width: 100%;
+    margin: auto;
+}
+
+.weather-app-container {
+    /* width: 100%; */
 }
 
 .weather-app-wrapper {
@@ -530,3 +536,21 @@ nav {
     margin-top: 5px;
 }
 
+.copyright {
+    display: flex;
+    align-items: center;
+    margin-top: 10px;
+    color: var(--black); 
+    font-size: 13px;
+    font-weight: 600;
+}
+.github-icon {
+    width: 13px;
+    height: 13px;
+    margin-right: 10px;
+}
+
+.github-link {
+    color: inherit;
+    margin-right: 5px;
+}
