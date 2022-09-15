@@ -438,7 +438,7 @@ function showVisibility(response) {
 }
 
 function getAirQualityData() {
-    let link = `http://api.openweathermap.org/data/2.5/air_pollution?lat=${lat}&lon=${lng}&appid=${apiKey}`;
+    let link = `https://api.openweathermap.org/data/2.5/air_pollution?lat=${lat}&lon=${lng}&appid=${apiKey}`;
     axios.get(link).then(showAirQuality);
 }
 
