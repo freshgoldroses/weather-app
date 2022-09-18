@@ -3,14 +3,31 @@ let apiKey = "c95d60a1e3adbeb286133f1ebebc2579";
 let units = "metric";
 let lat;
 let lng;
-let link;
+let weatherDataUrl;
+let currentTemperature;
+
 let searchCityForm = document.querySelector("#search-city-form");
 let currentLocationButton = document.querySelector("#current-location-button");
+let celsiusBtn = document.querySelector("#celsius-btn");
+let fahrenheitBtn = document.querySelector("#fahrenheit-btn");
+let currentTemperatureElement = document.querySelector("#current-temperature");
+let currentTemperatureScale = document.querySelector("#current-temperature-scale");
 
 searchCityForm.addEventListener("submit", handleSubmit);
 currentLocationButton.addEventListener("click", getCurrentPosition);
+celsiusBtn.addEventListener("click", convertToCelsius);
+fahrenheitBtn.addEventListener("click", convertToFahrenheit);
 
-let gaugeElement = document.querySelector(".gauge");
+function convertToCelsius() {
+    currentTemperatureElement.innerHTML = currentTemperature;
+    currentTemperatureScale.innerHTML = "°C";
+}
+
+function convertToFahrenheit() {
+    let temperature = Math.round((currentTemperature * 9/5) + 32);
+    currentTemperatureElement.innerHTML = temperature;
+    currentTemperatureScale.innerHTML = "°F";
+}
 
 function hideGaugeNumber(gauge, value) {
     let gaugeNumberThree = gauge.querySelector(".three-uv");
@@ -85,7 +102,7 @@ function addActiveClass(event) {
 }
 
 let changeTemperatureUnitWrapper = document.querySelector(
-    ".change-temperature-unit-wrapper"
+    ".temperature-btns-wrapper"
 );
 let weatherPeriodWrapper = document.querySelector(".weather-period-wrapper");
 
@@ -172,18 +189,18 @@ function handleSubmit(event) {
 
 
 function generateLinkByCity(city) {
-    link = `https://api.openweathermap.org/data/2.5/weather?q=${city}&units=${units}&appid=${apiKey}`;
+    weatherDataUrl = `https://api.openweathermap.org/data/2.5/weather?q=${city}&units=${units}&appid=${apiKey}`;
 
-    axios.get(link).then(getLocationName);
-    axios.get(link).then(defineCoordinates);
-    axios.get(link).then(showWeather);
+    axios.get(weatherDataUrl).then(getLocationName);
+    axios.get(weatherDataUrl).then(defineCoordinates);
+    axios.get(weatherDataUrl).then(showWeather);
 }
 
 function generateLinkByLocation(lat, lng) {
-    link = `https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lng}&units=${units}&appid=${apiKey}`;
+    weatherDataUrl = `https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lng}&units=${units}&appid=${apiKey}`;
     
-    axios.get(link).then(getLocationName);
-    axios.get(link).then(showWeather);
+    axios.get(weatherDataUrl).then(getLocationName);
+    axios.get(weatherDataUrl).then(showWeather);
 }
 
 function defineCoordinates(response) {
@@ -218,6 +235,7 @@ function showWeather(response) {
     showSunriseSunsetTime(response);
     showHumidity(response);
     showVisibility(response);
+    setIcon(response);
     getAirQualityData();
 }
 
@@ -247,9 +265,9 @@ function capitalizeFirstLetter(string) {
 }
 
 function showCurrentTemperature(response) {
-    let temperatute = Math.round(response.data.main.temp);
-    let temperatureElement = document.querySelector(".current-temperature");
-    temperatureElement.innerHTML = temperatute;
+    let temperatureElement = document.querySelector("#current-temperature");
+    currentTemperature = Math.round(response.data.main.temp);
+    temperatureElement.innerHTML = currentTemperature;
 }
 
 function processUvIndex(response) {
@@ -288,13 +306,13 @@ function defineWindDirrection(deg) {
         rotationDegree = -46;
     } else if (deg > 11.25 && deg <= 33.75) {
         windDirrection = "NNE"
-        rotationDegree = -23,5;
+        rotationDegree = -23.5;
     } else if (deg > 33.75 && deg <= 56.25) {
         windDirrection = "NE"
-        rotationDegree = -1;      ;
+        rotationDegree = -1;
     } else if (deg > 56.25 && deg <= 78.75) {
         windDirrection = "ENE"
-        rotationDegree = 21,5;        ;
+        rotationDegree = 21.5;
     } else if (deg > 78.75 && deg <= 101.25) {
         windDirrection = "E"
         rotationDegree = 44;
@@ -330,7 +348,7 @@ function defineWindDirrection(deg) {
         rotationDegree = 269;
     } else {
         windDirrection = "NNW"
-        rotationDegree = 291,5;
+        rotationDegree = 291.5;
     }
 
     windDirrectionElement.innerHTML = windDirrection;
@@ -477,23 +495,39 @@ function showAirQuality(response) {
     setVerticalGauge(airQualityIndexElement.innerHTML, maxAirQualityIndex, airQualityGaugeCircle);
 }
 
+function checkForMissingIcon(iconName) {
+    if (iconName === "04d") {
+        return iconName = "03d";
+    }
+
+    if (iconName === "04n") {
+        return iconName = "03n";
+    }
+
+    if (iconName === "10d") {
+        return iconName = "11d";
+    }
+
+    if (iconName === "10n") {
+        return iconName = "11n";
+    }
+    return false;
+}
+
+function setIcon(response) {
+    let iconName = response.data.weather[0].icon;
+    if (checkForMissingIcon(iconName) !== false) {
+        iconName = checkForMissingIcon(iconName);
+    }
+
+    let src = `img/icons/day/${iconName}.svg`;
+    let currentWeatherIconElement = document.querySelector("#current-weather-icon");
+    currentWeatherIconElement.setAttribute("src", src);
+}
+
 generateLinkByCity("Hamburg");
 
 
-// 👨‍🏫 Your task
-// In your project, when a user searches for a city (example: New York),
-// it should display the name of the city on the result page and the current
-// temperature of the city.
-
-// axios.get(url).then(showWeather);
-
-// Please note: there's no need to include a temperature conversion at the moment.
-// This will be taught later on in the course.
-
-// 🙀 Bonus point:
-// Add a Current Location button. When clicking on it, it uses the Geolocation API
-//  to get your GPS coordinates and display and the city and current temperature
-// using the OpenWeather API.
 
 // axios.get("https://restcountries.com/v3.1/alpha/de").then(response => console.log(response));
 // axios.get("https://api.unsplash.com/search/photos?query=kiev&client_id=qZUf4YHv469wMjMspUsOG_u6G2IXOPCEPV58jZFV4v4&order_by=relevant&content_filter=high&orientation=landscape").then(response => console.log(response));
@@ -509,7 +543,5 @@ generateLinkByCity("Hamburg");
 //   let temperatute = response.data.main.temp;
 //   let h1Element = document.querySelector("h1");
 
-//   h1Element.innerHTML = `It is ${temperatute} degrees in ${city}`;
-// }
 
 // axios.get(url).then(showWeather);

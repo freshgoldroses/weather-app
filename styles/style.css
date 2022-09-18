@@ -155,7 +155,7 @@ input:focus::-webkit-input-placeholder {
     transition: all 0.3s ease;
 }
 
-.curent-weather-icon {
+#current-weather-icon {
     margin-left: -20px;
     margin-top: 25px;
     margin-bottom: 25px;
@@ -169,11 +169,12 @@ input:focus::-webkit-input-placeholder {
     margin-bottom: 10px;
 }
 
-.current-temperature {
+#current-temperature {
     font-size: 65px;
     font-weight: 300;
 }
-.current-temperature-scale {
+
+#current-temperature-scale {
     font-size: 35px;
     font-weight: 500;
     margin-top: 4px;
@@ -236,16 +237,16 @@ nav {
     transition: var(--transition);
 }
 
-.change-temperature-unit-item:first-child {
+.change-temperature-btn:first-child {
     margin-right: 10px;
 }
 
-.change-temperature-unit-wrapper {
+.temperature-btns-wrapper {
     display: flex;
     align-items: center;
 }
 
-.change-temperature-unit-item {
+.change-temperature-btn {
     background-color: var(--white);
     font-weight: 800;
     width: 30px;
@@ -256,8 +257,8 @@ nav {
     transition: var(--transition);
 }
 
-.change-temperature-unit-item.active,
-.change-temperature-unit-item:hover {
+.change-temperature-btn.active,
+.change-temperature-btn:hover {
     background-color: var(--black);
     color: var(--white);
     transition: var(--transition);
@@ -518,7 +519,7 @@ nav {
 }
 
 #humidity-gauge>.vertical-gauge-circle{
-    margin-top: 0px;
+    margin-top: 0;
 }
 
 .item-info-with-vertical-gauge {

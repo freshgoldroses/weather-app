@@ -51,6 +51,7 @@
                                     name="search-city-value"
                                     id="search-city-input"
                                     placeholder="Search for places..."
+                                    autocomplete="off"
                                 />
                                 <!-- <button class="search-location">
                                     <i
@@ -69,13 +70,11 @@
                             <img
                                 src="img/icons/day/clear.svg"
                                 alt="weather icon"
-                                class="curent-weather-icon"
+                                id="current-weather-icon"
                             />
                             <div class="current-temperature-wrapper">
-                                <span class="current-temperature temperature"
-                                    >12</span
-                                >
-                                <span class="current-temperature-scale">°C</span>
+                                <span class="temperature" id = "current-temperature"></span>
+                                <span id="current-temperature-scale">°C</span>
                             </div>
     
                             <div class="current-date title">
@@ -131,16 +130,16 @@
                                 </span>
                             </div>
     
-                            <div class="change-temperature-unit-wrapper">
+                            <div class="temperature-btns-wrapper">
                                 <button
-                                    class="change-temperature-unit-item sub-title active"
-                                    id="show-in-celsius-button"
+                                    class="change-temperature-btn sub-title active"
+                                    id="celsius-btn"
                                 >
                                     °C
                                 </button>
                                 <button
-                                    class="change-temperature-unit-item sub-title"
-                                    id="show-in-fahrenheit-button"
+                                    class="change-temperature-btn sub-title"
+                                    id="fahrenheit-btn"
                                 >
                                     °F
                                 </button>
@@ -400,7 +399,7 @@
                                         <div class="large-text">km</div>
                                     </div>
                                     <div class="today-highlights-item-info">
-                                        <span class="large-text" id = "visibility-quality-name"> Average </span>
+                                        <span class="large-text" id = "visibility-quality-name"></span>
                                         <span class="emoji">
                                             <img
                                                 src="img/icons/emoji/neutral-face.svg"
