@@ -159,6 +159,8 @@ input:focus::-webkit-input-placeholder {
     margin-left: -20px;
     margin-top: 25px;
     margin-bottom: 25px;
+    height: 175px;
+    width: auto;
 }
 
 .current-temperature-wrapper {
@@ -194,6 +196,10 @@ input:focus::-webkit-input-placeholder {
     height: 30px;
 }
 
+#cloudiness {
+    text-transform: capitalize;
+}
+
 .chance-of-rain {
     padding: 5px 0;
 }
@@ -207,7 +213,7 @@ input:focus::-webkit-input-placeholder {
     border-radius: var(--radius);
 }
 
-.vieved-city-name {
+.viewed-city-name {
     position: absolute;
     color: var(--white);
     top: 30px;
@@ -224,6 +230,10 @@ nav {
     width: 100%;
     justify-content: space-between;
     align-items: center;
+}
+
+#forecastInfo {
+    min-height: 90px;
 }
 
 .weather-period-wrapper span {
@@ -264,10 +274,14 @@ nav {
     transition: var(--transition);
 }
 
-.period-weather-information-wrapper {
+#period-weather-information-wrapper {
     display: flex;
     justify-content: space-between;
     margin-top: 45px;
+}
+
+.week-weather-items-wrapper {
+    display: flex;
 }
 
 .part-of-period-information:not(:last-child) {
@@ -285,8 +299,8 @@ nav {
 }
 
 .icon img {
-    width: 40px;
-    height: auto;
+    height: 32px;
+    width: auto;
     margin: 5px auto;
 }
 

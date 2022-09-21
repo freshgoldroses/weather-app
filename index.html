@@ -79,9 +79,7 @@
     
                             <div class="current-date title">
                                 <span id="current-week-day"></span>
-                                <span class="light-text-color" id="current-time">
-                                    
-                                </span>
+                                <span class="light-text-color" id="current-time"></span>
                             </div>
     
                             <div class="about-today-weather-wrapper">
@@ -109,7 +107,7 @@
                                     alt="viewed-city"
                                     class="viewed-city-image"
                                 />
-                                <div class="vieved-city-name title" id="location">
+                                <div class="viewed-city-name title" id="location">
                                     <span id="city"></span>,
                                     <span id="country"></span>
                                 </div>
@@ -145,135 +143,135 @@
                                 </button>
                             </div>
                         </nav>
-    
-                        <div class="period-weather-information-wrapper">
-                            <div class="part-of-period-information">
-                                <div class="day sub-title">Mon</div>
-                                <div class="icon">
-                                    <img
-                                        src="img/icons/day/clear.svg"
-                                        alt="clear"
-                                    />
-                                </div>
-                                <div class="temperature">
-                                    <span class="temperature max main-text">
-                                        12°
-                                    </span>
-                                    <span class="temperature min main-text">
-                                        -7°
-                                    </span>
-                                </div>
-                            </div>
-    
-                            <div class="part-of-period-information">
-                                <div class="day sub-title">Tue</div>
-                                <div class="icon">
-                                    <img
-                                        src="img/icons/day/partly_cloudy.svg"
-                                        alt="partly cloudy"
-                                    />
-                                </div>
-                                <div class="temperature">
-                                    <span class="temperature max main-text">
-                                        9°
-                                    </span>
-                                    <span class="temperature min main-text">
-                                        7°
-                                    </span>
-                                </div>
-                            </div>
-    
-                            <div class="part-of-period-information">
-                                <div class="day sub-title">Wed</div>
-                                <div class="icon">
-                                    <img
-                                        src="img/icons/day/rainy.svg"
-                                        alt="rainy"
-                                    />
-                                </div>
-                                <div class="temperature">
-                                    <span class="temperature max main-text">
-                                        8°
-                                    </span>
-                                    <span class="temperature min main-text">
-                                        -1°</span
-                                    >
-                                </div>
-                            </div>
-    
-                            <div class="part-of-period-information">
-                                <div class="day sub-title">Thu</div>
-                                <div class="icon">
-                                    <img
-                                        src="img/icons/day/snowy.svg"
-                                        alt="snowy"
-                                    />
-                                </div>
-                                <div class="temperature">
-                                    <span class="temperature max main-text">
-                                        5°
-                                    </span>
-                                    <span class="temperature min main-text">
-                                        -2°
-                                    </span>
-                                </div>
-                            </div>
-    
-                            <div class="part-of-period-information">
-                                <div class="day sub-title">Fri</div>
-                                <div class="icon">
-                                    <img
-                                        src="img/icons/day/cloudy.svg"
-                                        alt="cloudy"
-                                    />
-                                </div>
-                                <div class="temperature">
-                                    <span class="temperature max main-text">
-                                        4°
-                                    </span>
-                                    <span class="temperature min main-text">
-                                        -4°
-                                    </span>
-                                </div>
-                            </div>
-    
-                            <div class="part-of-period-information">
-                                <div class="day sub-title">Sat</div>
-                                <div class="icon">
-                                    <img
-                                        src="img/icons/day/rainy.svg"
-                                        alt="rainy"
-                                    />
-                                </div>
-                                <div class="temperature">
-                                    <span class="temperature max main-text">
-                                        3°
-                                    </span>
-                                    <span class="temperature min main-text">
-                                        -3°
-                                    </span>
-                                </div>
-                            </div>
-    
-                            <div class="part-of-period-information">
-                                <div class="day sub-title">Sun</div>
-                                <div class="icon">
-                                    <img
-                                        src="img/icons/day/clear.svg"
-                                        alt="clear"
-                                    />
-                                </div>
-                                <div class="temperature">
-                                    <span class="temperature max main-text">
-                                        15°
-                                    </span>
-                                    <span class="temperature min main-text">
-                                        -3°
-                                    </span>
-                                </div>
-                            </div>
+                        <div id="forecast-info">
+                            <div id="period-weather-information-wrapper">
+<!--                            <div class="part-of-period-information">-->
+<!--                                <div class="day sub-title">Mon</div>-->
+<!--                                <div class="icon">-->
+<!--                                    <img-->
+<!--                                        src="img/icons/day/clear.svg"-->
+<!--                                        alt="clear"-->
+<!--                                    />-->
+<!--                                </div>-->
+<!--                                <div class="temperature">-->
+<!--                                    <span class="temperature max main-text">-->
+<!--                                        12°-->
+<!--                                    </span>-->
+<!--                                    <span class="temperature min main-text">-->
+<!--                                        -7°-->
+<!--                                    </span>-->
+<!--                                </div>-->
+<!--                            </div>-->
+<!--    -->
+<!--                            <div class="part-of-period-information">-->
+<!--                                <div class="day sub-title">Tue</div>-->
+<!--                                <div class="icon">-->
+<!--                                    <img-->
+<!--                                        src="img/icons/day/partly_cloudy.svg"-->
+<!--                                        alt="partly cloudy"-->
+<!--                                    />-->
+<!--                                </div>-->
+<!--                                <div class="temperature">-->
+<!--                                    <span class="temperature max main-text">-->
+<!--                                        9°-->
+<!--                                    </span>-->
+<!--                                    <span class="temperature min main-text">-->
+<!--                                        7°-->
+<!--                                    </span>-->
+<!--                                </div>-->
+<!--                            </div>-->
+<!--    -->
+<!--                            <div class="part-of-period-information">-->
+<!--                                <div class="day sub-title">Wed</div>-->
+<!--                                <div class="icon">-->
+<!--                                    <img-->
+<!--                                        src="img/icons/day/rainy.svg"-->
+<!--                                        alt="rainy"-->
+<!--                                    />-->
+<!--                                </div>-->
+<!--                                <div class="temperature">-->
+<!--                                    <span class="temperature max main-text">-->
+<!--                                        8°-->
+<!--                                    </span>-->
+<!--                                    <span class="temperature min main-text">-->
+<!--                                        -1°</span-->
+<!--                                    >-->
+<!--                                </div>-->
+<!--                            </div>-->
+<!--    -->
+<!--                            <div class="part-of-period-information">-->
+<!--                                <div class="day sub-title">Thu</div>-->
+<!--                                <div class="icon">-->
+<!--                                    <img-->
+<!--                                        src="img/icons/day/snowy.svg"-->
+<!--                                        alt="snowy"-->
+<!--                                    />-->
+<!--                                </div>-->
+<!--                                <div class="temperature">-->
+<!--                                    <span class="temperature max main-text">-->
+<!--                                        5°-->
+<!--                                    </span>-->
+<!--                                    <span class="temperature min main-text">-->
+<!--                                        -2°-->
+<!--                                    </span>-->
+<!--                                </div>-->
+<!--                            </div>-->
+<!--    -->
+<!--                            <div class="part-of-period-information">-->
+<!--                                <div class="day sub-title">Fri</div>-->
+<!--                                <div class="icon">-->
+<!--                                    <img-->
+<!--                                        src="img/icons/day/cloudy.svg"-->
+<!--                                        alt="cloudy"-->
+<!--                                    />-->
+<!--                                </div>-->
+<!--                                <div class="temperature">-->
+<!--                                    <span class="temperature max main-text">-->
+<!--                                        4°-->
+<!--                                    </span>-->
+<!--                                    <span class="temperature min main-text">-->
+<!--                                        -4°-->
+<!--                                    </span>-->
+<!--                                </div>-->
+<!--                            </div>-->
+<!--    -->
+<!--                            <div class="part-of-period-information">-->
+<!--                                <div class="day sub-title">Sat</div>-->
+<!--                                <div class="icon">-->
+<!--                                    <img-->
+<!--                                        src="img/icons/day/rainy.svg"-->
+<!--                                        alt="rainy"-->
+<!--                                    />-->
+<!--                                </div>-->
+<!--                                <div class="temperature">-->
+<!--                                    <span class="temperature max main-text">-->
+<!--                                        3°-->
+<!--                                    </span>-->
+<!--                                    <span class="temperature min main-text">-->
+<!--                                        -3°-->
+<!--                                    </span>-->
+<!--                                </div>-->
+<!--                            </div>-->
+<!--    -->
+<!--                            <div class="part-of-period-information">-->
+<!--                                <div class="day sub-title">Sun</div>-->
+<!--                                <div class="icon">-->
+<!--                                    <img-->
+<!--                                        src="img/icons/day/clear.svg"-->
+<!--                                        alt="clear"-->
+<!--                                    />-->
+<!--                                </div>-->
+<!--                                <div class="temperature">-->
+<!--                                    <span class="temperature max main-text">-->
+<!--                                        15°-->
+<!--                                    </span>-->
+<!--                                    <span class="temperature min main-text">-->
+<!--                                        -3°-->
+<!--                                    </span>-->
+<!--                                </div>-->
+<!--                            </div>-->
                         </div>
-    
+                        </div>
                         <div class="today-highlights-wrapper">
                             <div class="title">Today's Highlights</div>
                             <div class="today-highlights-list">
