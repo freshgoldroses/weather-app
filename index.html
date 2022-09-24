@@ -117,12 +117,12 @@
     
                     <div class="right-column-wrapper">
                         <nav>
-                            <div class="weather-period-wrapper">
-                                <span class="weather-period title light-text-color">
+                            <div id="weather-period-wrapper">
+                                <span class="weather-period title light-text-color" id="hourly-forecast">
                                     Today
                                 </span>
                                 <span
-                                    class="weather-period title light-text-color active"
+                                    class="weather-period title light-text-color active" id="week-forecast"
                                 >
                                     Week
                                 </span>
@@ -143,8 +143,8 @@
                                 </button>
                             </div>
                         </nav>
-                        <div id="forecast-info">
-                            <div id="period-weather-information-wrapper">
+                        <div id="week-forecast-info" >
+                            <div class="period-weather-information-wrapper">
 <!--                            <div class="part-of-period-information">-->
 <!--                                <div class="day sub-title">Mon</div>-->
 <!--                                <div class="icon">-->
@@ -272,181 +272,189 @@
 <!--                            </div>-->
                         </div>
                         </div>
+
+                        <div id="hourly-forecast-info" class="none">
+                            <div class="period-weather-information-wrapper"></div>
+                        </div>
                         <div class="today-highlights-wrapper">
                             <div class="title">Today's Highlights</div>
                             <div class="today-highlights-list">
-                                <div class="today-highlights-item">
-                                    <div class="sub-title light-text-color">
-                                        UV Index
+                                <div class="today-highlights-list-row">
+                                    <div class="today-highlights-item">
+                                        <div class="sub-title light-text-color">
+                                            UV Index
+                                        </div>
+                                        <div class="gauge">
+                                            <span class="three-uv main-text">3</span>
+                                            <span class="six-uv main-text">6</span>
+                                            <span class="nine-uv main-text">9</span>
+                                            <span class="twelve-uv main-text">12</span>
+                                            <div class="gauge-body">
+                                                <div class="gauge-contour"></div>
+                                                <div class="gauge-fill"></div>
+                                                <div class="gauge-cover">
+                                                    <div
+                                                            class="today-highlights-item-number gauge-text" id = "uv-index"
+                                                    ></div>
+                                                </div>
+                                            </div>
+                                        </div>
                                     </div>
-                                    <div class="gauge">
-                                        <span class="three-uv main-text">3</span>
-                                        <span class="six-uv main-text">6</span>
-                                        <span class="nine-uv main-text">9</span>
-                                        <span class="twelve-uv main-text">12</span>
-                                        <div class="gauge-body">
-                                            <div class="gauge-contour"></div>
-                                            <div class="gauge-fill"></div>
-                                            <div class="gauge-cover">
+                                    <div class="today-highlights-item">
+                                        <div class="sub-title light-text-color">
+                                            Wind status
+                                        </div>
+                                        <div
+                                                class="today-highlight-item-number__wrapper-down"
+                                        >
+                                        <span class="today-highlights-item-number" id="wind-speed"
+                                        ></span
+                                        >
+                                            <span class="large-text">km/h</span>
+                                        </div>
+                                        <div class="today-highlights-item-info">
+                                            <div class="compass-wrapper">
+                                                <div class="compass"></div>
+                                            </div>
+                                            <div class="large-text" id = "wind-dirrection">SW</div>
+                                        </div>
+                                    </div>
+                                    <div class="today-highlights-item">
+                                        <div class="sub-title light-text-color">
+                                            Sunrise & Sunset
+                                        </div>
+                                        <div class="today-highlights-item-info">
+                                            <i
+                                                    class="fa-solid fa-arrow-up sunrise-icon"
+                                            ></i>
+                                            <div class="time">
+                                                <div class="time-today main-text" id = "sunrise-time">
+
+                                                </div>
+                                                <!-- <div
+                                                    class="time-difference-from-yesterday small-text light-text-color"
+                                                >
+                                                    - 1m 46s
+                                                </div> -->
+                                            </div>
+                                        </div>
+                                        <div class="today-highlights-item-info">
+                                            <i
+                                                    class="fa-solid fa-arrow-down sunset-icon"
+                                            ></i>
+                                            <div class="sub-title time">
+                                                <div class="time-today main-text" id = "sunset-time">
+
+                                                </div>
+                                                <!-- <div
+                                                    class="time-difference-from-yesterday small-text light-text-color"
+                                                >
+                                                    + 2m 22s
+                                                </div> -->
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="today-highlights-list-row">
+                                    <div class="today-highlights-item">
+                                        <div class="sub-title light-text-color">
+                                            Humidity
+                                        </div>
+                                        <div
+                                            class="today-highlights-item-info item-info-with-vertical-gauge"
+                                        >
+                                            <div
+                                                class="today-highlight-item-number__wrapper-up"
+                                            >
                                                 <div
-                                                    class="today-highlights-item-number gauge-text" id = "uv-index"
+                                                    class="today-highlights-item-number" id="humidity"
+                                                >
+
+                                                </div>
+                                                <div class="large-text" id = "humidity-scale">%</div>
+                                            </div>
+
+                                            <div class="vertical-gauge" id = "humidity-gauge">
+                                                <div
+                                                    class="vertical-gauge-circle" id = "humidity-gauge-circle"
                                                 ></div>
                                             </div>
                                         </div>
-                                    </div>
-                                </div>
-                                <div class="today-highlights-item">
-                                    <div class="sub-title light-text-color">
-                                        Wind status
-                                    </div>
-                                    <div
-                                        class="today-highlight-item-number__wrapper-down"
-                                    >
-                                        <span class="today-highlights-item-number" id="wind-speed"
-                                            ></span
-                                        >
-                                        <span class="large-text">km/h</span>
-                                    </div>
-                                    <div class="today-highlights-item-info">
-                                        <div class="compass-wrapper">
-                                            <div class="compass"></div>
-                                        </div>
-                                        <div class="large-text" id = "wind-dirrection">SW</div>
-                                    </div>
-                                </div>
-                                <div class="today-highlights-item">
-                                    <div class="sub-title light-text-color">
-                                        Sunrise & Sunset
-                                    </div>
-                                    <div class="today-highlights-item-info">
-                                        <i
-                                            class="fa-solid fa-arrow-up sunrise-icon"
-                                        ></i>
-                                        <div class="time">
-                                            <div class="time-today main-text" id = "sunrise-time">
-                                                
-                                            </div>
-                                            <!-- <div
-                                                class="time-difference-from-yesterday small-text light-text-color"
-                                            >
-                                                - 1m 46s
-                                            </div> -->
+                                        <div class="today-highlights-item-info">
+                                            <span class="large-text" id = "humidity-quality-name">  </span>
+                                            <span class="emoji">
+                                                <img
+                                                    src="img/icons/emoji/thums-up.svg"
+                                                    id = "humidity-emoji"
+                                                    alt="thums up"
+                                                />
+                                            </span>
                                         </div>
                                     </div>
-                                    <div class="today-highlights-item-info">
-                                        <i
-                                            class="fa-solid fa-arrow-down sunset-icon"
-                                        ></i>
-                                        <div class="sub-title time">
-                                            <div class="time-today main-text" id = "sunset-time">
-                                                
-                                            </div>
-                                            <!-- <div
-                                                class="time-difference-from-yesterday small-text light-text-color"
-                                            >
-                                                + 2m 22s
-                                            </div> -->
+                                    <div class="today-highlights-item">
+                                        <div class="sub-title light-text-color">
+                                            Visibility
                                         </div>
-                                    </div>
-                                </div>
-                                <div class="today-highlights-item">
-                                    <div class="sub-title light-text-color">
-                                        Humidity
-                                    </div>
-                                    <div
-                                        class="today-highlights-item-info item-info-with-vertical-gauge"
-                                    >
-                                        <div
-                                            class="today-highlight-item-number__wrapper-up"
-                                        >
-                                            <div
-                                                class="today-highlights-item-number" id="humidity"
-                                            >
-                                               
-                                            </div>
-                                            <div class="large-text" id = "humidity-scale">%</div>
-                                        </div>
-    
-                                        <div class="vertical-gauge" id = "humidity-gauge">
-                                            <div
-                                                class="vertical-gauge-circle" id = "humidity-gauge-circle"
-                                            ></div>
-                                        </div>
-                                    </div>
-                                    <div class="today-highlights-item-info">
-                                        <span class="large-text" id = "humidity-quality-name">  </span>
-                                        <span class="emoji">
-                                            <img
-                                                src="img/icons/emoji/thums-up.svg"
-                                                id = "humidity-emoji"
-                                                alt="thums up"
-                                            />
-                                        </span>
-                                    </div>
-                                </div>
-                                <div class="today-highlights-item">
-                                    <div class="sub-title light-text-color">
-                                        Visibility
-                                    </div>
-                                    <div
-                                        class="today-highlight-item-number__wrapper-down"
-                                    >
-                                        <div class="today-highlights-item-number" id="visibility">
-                                            
-                                        </div>
-                                        <div class="large-text">km</div>
-                                    </div>
-                                    <div class="today-highlights-item-info">
-                                        <span class="large-text" id = "visibility-quality-name"></span>
-                                        <span class="emoji">
-                                            <img
-                                                src="img/icons/emoji/neutral-face.svg"
-                                                id = "visibility-emoji"
-                                                alt="emoji"
-                                            />
-                                        </span>
-                                    </div>
-                                </div>
-                                <div class="today-highlights-item">
-                                    <div class="sub-title light-text-color">
                                         Air Quality
-                                    </div>
-                                    <div
-                                        class="today-highlights-item-info item-info-with-vertical-gauge"
-                                    >
                                         <div
-                                            class="today-highlight-item-number__wrapper-up"
+                                            class="today-highlight-item-number__wrapper-down"
+                                        >
+                                            <div class="today-highlights-item-number" id="visibility">
+
+                                            </div>
+                                            <div class="large-text">km</div>
+                                        </div>
+                                        <div class="today-highlights-item-info">
+                                            <span class="large-text" id = "visibility-quality-name"></span>
+                                            <span class="emoji">
+                                                <img
+                                                    src="img/icons/emoji/neutral-face.svg"
+                                                    id = "visibility-emoji"
+                                                    alt="emoji"
+                                                />
+                                            </span>
+                                        </div>
+                                    </div>
+                                    <div class="today-highlights-item">
+                                        <div class="sub-title light-text-color">
+                                            Air Quality
+                                        </div>
+                                        <div
+                                            class="today-highlights-item-info item-info-with-vertical-gauge"
                                         >
                                             <div
-                                                class="today-highlights-item-number" id = "air-quality-index"
+                                                class="today-highlight-item-number__wrapper-up"
                                             >
-                                                
+                                                <div
+                                                    class="today-highlights-item-number" id = "air-quality-index"
+                                                >
+
+                                                </div>
+                                            </div>
+
+                                            <div
+                                                class="air-quality-gauge vertical-gauge"
+                                            >
+                                                <div
+                                                    class="vertical-gauge-circle" id = "air-quality-gauge-circle"
+                                                ></div>
                                             </div>
                                         </div>
-    
-                                        <div
-                                            class="air-quality-gauge vertical-gauge"
-                                        >
-                                            <div
-                                                class="vertical-gauge-circle" id = "air-quality-gauge-circle"
-                                            ></div>
+                                        <div class="today-highlights-item-info">
+                                            <span class="large-text" id = "air-quality-name">  </span>
+                                            <span class="emoji">
+                                                <img
+                                                    src="img/icons/emoji/thums-up.svg"
+                                                    id="air-quality-emoji"
+                                                    alt="thums up"
+                                                />
+                                            </span>
                                         </div>
-                                    </div>
-                                    <div class="today-highlights-item-info">
-                                        <span class="large-text" id = "air-quality-name">  </span>
-                                        <span class="emoji">
-                                            <img
-                                                src="img/icons/emoji/thums-up.svg"
-                                                id="air-quality-emoji"
-                                                alt="thums up"
-                                            />
-                                        </span>
                                     </div>
                                 </div>
                             </div>
                         </div>
                     </div>
-                </div>
             </div>
     
             <div class="copyright">

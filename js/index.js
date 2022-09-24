@@ -1,28 +1,66 @@
 let currentDate = new Date();
-let apiKey = "c95d60a1e3adbeb286133f1ebebc2579";
+let apiKey = "7518f0f6bd41461564c14628ba15ee3b";
 let units = "metric";
+let isFahrenheit = false;
 let lat;
 let lng;
 let weatherDataUrl;
-let oneCallUrl;
 let currentTemperature;
 
-let weatherPeriodWrapper = document.querySelector(".weather-period-wrapper");
-let changeTemperatureUnitWrapper = document.querySelector(".temperature-btns-wrapper");
-let searchCityForm = document.querySelector("#search-city-form");
-let currentLocationButton = document.querySelector("#current-location-button");
-let celsiusBtn = document.querySelector("#celsius-btn");
-let fahrenheitBtn = document.querySelector("#fahrenheit-btn");
 let currentTemperatureElement = document.querySelector("#current-temperature");
-let currentTemperatureScale = document.querySelector("#current-temperature-scale");
+let currentTemperatureScale = document.querySelector(
+    "#current-temperature-scale"
+);
 
-searchCityForm.addEventListener("submit", handleSubmit);
-currentLocationButton.addEventListener("click", getCurrentPosition);
-celsiusBtn.addEventListener("click", convertToCelsius);
-fahrenheitBtn.addEventListener("click", convertToFahrenheit);
-changeTemperatureUnitWrapper.addEventListener("click", addActiveClass);
-weatherPeriodWrapper.addEventListener("click", addActiveClass);
+let hourlyForecastInfoElement = document.querySelector("#hourly-forecast-info");
+let weekForecastInfoElement = document.querySelector("#week-forecast-info");
 
+function initForecastBtnListeners() {
+    let hourlyForecastBtn = document.querySelector("#hourly-forecast");
+    let weekForecastBtn = document.querySelector("#week-forecast");
+    hourlyForecastBtn.addEventListener("click", displayHourlyForecast);
+    weekForecastBtn.addEventListener("click", displayWeekForcast);
+}
+
+function initConvertBtnListeners() {
+    let celsiusBtn = document.querySelector("#celsius-btn");
+    let fahrenheitBtn = document.querySelector("#fahrenheit-btn");
+    celsiusBtn.addEventListener("click", convertToCelsius);
+    fahrenheitBtn.addEventListener("click", convertToFahrenheit);
+}
+
+function initCityFormListeners() {
+    let searchCityForm = document.querySelector("#search-city-form");
+    searchCityForm.addEventListener("submit", handleSubmit);
+}
+
+function initActiveClassListeners() {
+    let changeTemperatureUnitWrapper = document.querySelector(
+        ".temperature-btns-wrapper"
+    );
+    let weatherPeriodWrapper = document.querySelector(
+        "#weather-period-wrapper"
+    );
+    changeTemperatureUnitWrapper.addEventListener("click", addActiveClass);
+    weatherPeriodWrapper.addEventListener("click", addActiveClass);
+}
+
+function initCurrentLocationListener() {
+    let currentLocationButton = document.querySelector(
+        "#current-location-button"
+    );
+    currentLocationButton.addEventListener("click", getCurrentPosition);
+}
+
+function displayHourlyForecast() {
+    hourlyForecastInfoElement.classList.remove("none");
+    weekForecastInfoElement.classList.add("none");
+}
+
+function displayWeekForcast() {
+    weekForecastInfoElement.classList.remove("none");
+    hourlyForecastInfoElement.classList.add("none");
+}
 
 function convertToCelsius() {
     currentTemperatureElement.innerHTML = currentTemperature;
@@ -30,7 +68,7 @@ function convertToCelsius() {
 }
 
 function convertToFahrenheit() {
-    let temperature = Math.round((currentTemperature * 9 / 5) + 32);
+    let temperature = Math.round((currentTemperature * 9) / 5 + 32);
     currentTemperatureElement.innerHTML = temperature;
     currentTemperatureScale.innerHTML = "°F";
 }
@@ -106,6 +144,10 @@ function addActiveClass(event) {
     element.classList.add("active");
 }
 
+function convertTimestamp(timestamp) {
+    return (newDate = timestamp * 1000);
+}
+
 function formatTime24H(time) {
     let hours = time.getHours();
     let minutes = time.getMinutes();
@@ -117,7 +159,7 @@ function formatTime24H(time) {
     }
     time = `${hours}:${minutes}`;
     return time;
-};
+}
 
 function formatTime12H(time) {
     let hours = time.getHours();
@@ -139,7 +181,7 @@ function formatTime12H(time) {
     }
 
     time = `${hours}:${minutes} ${partOfTheDay}`;
-    return time
+    return time;
 }
 
 function showCurrentDate() {
@@ -223,6 +265,25 @@ function getOneCallUrl(lat, lng) {
     axios.get(oneCallUrl).then(displayWeather);
 }
 
+function displayWeather(response) {
+    let currentWeatherIconElement = document.querySelector(
+        "#current-weather-icon"
+    );
+
+    getCurrentTemperature(response);
+    getCloudinessInfo(response);
+    getFeelsLikeInfo(response);
+    getUvi(response);
+    getWindStatus(response);
+    getSunriseSunsetTime(response);
+    getHumidity(response);
+    getVisibility(response);
+    getIcon(response, currentWeatherIconElement);
+    getAirQualityData();
+    getWeekForecast(response);
+    getHourlyForecast(response);
+}
+
 function getCurrentTemperature(response) {
     let temperatureElement = document.querySelector("#current-temperature");
     currentTemperature = Math.round(response.data.current.temp);
@@ -233,7 +294,7 @@ function getCloudinessInfo(response) {
     let cloudiness = response.data.current.weather[0].description;
     let cloudinessElement = document.querySelector("#cloudiness");
     cloudinessElement.innerHTML = cloudiness;
-};
+}
 
 function getFeelsLikeInfo(response) {
     let feelsLikeElement = document.querySelector("#feels-like");
@@ -242,7 +303,6 @@ function getFeelsLikeInfo(response) {
 }
 
 function getUvi(response) {
-    console.log(response);
     let uvi = Math.round(response.data.current.uvi);
     let uvElement = document.querySelector("#uv-index");
     uvElement.innerHTML = uvi;
@@ -261,8 +321,8 @@ function getSunriseSunsetTime(response) {
     let sunriseElement = document.querySelector("#sunrise-time");
     let sunsetElement = document.querySelector("#sunset-time");
 
-    let sunrise = new Date(response.data.current.sunrise * 1000);
-    let sunset = new Date (response.data.current.sunset * 1000);
+    let sunrise = new Date(convertTimestamp(response.data.current.sunrise));
+    let sunset = new Date(convertTimestamp(response.data.current.sunset));
 
     sunrise = formatTime12H(sunrise);
     sunset = formatTime12H(sunset);
@@ -276,13 +336,17 @@ function getHumidity(response) {
     let maxHumidity = 100;
 
     let humidityElement = document.querySelector("#humidity");
-    let humidityGaugeCircleElement = document.querySelector("#humidity-gauge-circle");
+    let humidityGaugeCircleElement = document.querySelector(
+        "#humidity-gauge-circle"
+    );
 
     humidityElement.innerHTML = humidity;
 
     function defineQualityName(index) {
         let qualityName;
-        let qualityNameElement = document.querySelector("#humidity-quality-name");
+        let qualityNameElement = document.querySelector(
+            "#humidity-quality-name"
+        );
 
         if (index < 15) {
             qualityName = "Too Dry";
@@ -300,9 +364,9 @@ function getHumidity(response) {
         let emojiElement = document.querySelector("#humidity-emoji");
 
         if (index < 15 || index > 50) {
-            emoji = "thums-down.svg"
+            emoji = "thums-down.svg";
         } else {
-            emoji = "thums-up.svg"
+            emoji = "thums-up.svg";
         }
 
         let emojiLink = `img/icons/emoji/${emoji}`;
@@ -311,7 +375,11 @@ function getHumidity(response) {
 
     defineQualityName(humidityElement.innerHTML);
     defineEmoji(humidityElement.innerHTML);
-    setVerticalGauge(humidityElement.innerHTML, maxHumidity, humidityGaugeCircleElement);
+    setVerticalGauge(
+        humidityElement.innerHTML,
+        maxHumidity,
+        humidityGaugeCircleElement
+    );
 }
 
 function getVisibility(response) {
@@ -323,7 +391,9 @@ function getVisibility(response) {
     function defineQualityNameAndEmoji(value) {
         let qualityName;
         let emoji;
-        let qualityNameElement = document.querySelector("#visibility-quality-name");
+        let qualityNameElement = document.querySelector(
+            "#visibility-quality-name"
+        );
         let emojiElement = document.querySelector("#visibility-emoji");
 
         if (value < 0.5) {
@@ -334,10 +404,10 @@ function getVisibility(response) {
             emoji = "slightly-frowning-face.svg";
         } else if (value >= 2 && value < 10) {
             qualityName = "Average";
-            emoji = "neutral-face.svg"
+            emoji = "neutral-face.svg";
         } else {
             qualityName = "Good";
-            emoji = "smiling-face.svg"
+            emoji = "smiling-face.svg";
         }
 
         let emojiLink = `img/icons/emoji/${emoji}`;
@@ -345,7 +415,7 @@ function getVisibility(response) {
         emojiElement.src = emojiLink;
     }
 
-    defineQualityNameAndEmoji(visibilityElement.innerHTML)
+    defineQualityNameAndEmoji(visibilityElement.innerHTML);
 }
 
 function getIcon(response, element) {
@@ -362,55 +432,55 @@ function defineWindDirrection(deg) {
     let windDirrection;
     let rotationDegree;
     let compasElement = document.querySelector(".compass");
-    let windDirrectionElement = document.querySelector("#wind-dirrection")
+    let windDirrectionElement = document.querySelector("#wind-dirrection");
 
     if (deg > 348.75 && deg <= 11.25) {
-        windDirrection = "N"
+        windDirrection = "N";
         rotationDegree = -46;
     } else if (deg > 11.25 && deg <= 33.75) {
-        windDirrection = "NNE"
+        windDirrection = "NNE";
         rotationDegree = -23.5;
     } else if (deg > 33.75 && deg <= 56.25) {
-        windDirrection = "NE"
+        windDirrection = "NE";
         rotationDegree = -1;
     } else if (deg > 56.25 && deg <= 78.75) {
-        windDirrection = "ENE"
+        windDirrection = "ENE";
         rotationDegree = 21.5;
     } else if (deg > 78.75 && deg <= 101.25) {
-        windDirrection = "E"
+        windDirrection = "E";
         rotationDegree = 44;
     } else if (deg > 101.25 && deg <= 123.75) {
-        windDirrection = "ESE"
+        windDirrection = "ESE";
         rotationDegree = 66.5;
     } else if (deg > 123.75 && deg <= 146.25) {
-        windDirrection = "SE"
+        windDirrection = "SE";
         rotationDegree = 89;
     } else if (deg > 146.25 && deg <= 168.75) {
-        windDirrection = "SSE"
+        windDirrection = "SSE";
         rotationDegree = 111.5;
     } else if (deg > 168.75 && deg <= 191.25) {
-        windDirrection = "S"
+        windDirrection = "S";
         rotationDegree = 134;
     } else if (deg > 191.25 && deg <= 213.75) {
-        windDirrection = "SSW"
+        windDirrection = "SSW";
         rotationDegree = 156.5;
     } else if (deg > 213.75 && deg <= 236.25) {
-        windDirrection = "SW"
+        windDirrection = "SW";
         rotationDegree = 179;
     } else if (deg > 236.25 && deg <= 258.75) {
-        windDirrection = "WSW"
+        windDirrection = "WSW";
         rotationDegree = 201.5;
     } else if (deg > 258.75 && deg <= 281.25) {
-        windDirrection = "W"
+        windDirrection = "W";
         rotationDegree = 224;
     } else if (deg > 281.25 && deg <= 303.75) {
-        windDirrection = "WNW"
+        windDirrection = "WNW";
         rotationDegree = 246.5;
     } else if (deg > 303.75 && deg <= 326.25) {
-        windDirrection = "NW"
+        windDirrection = "NW";
         rotationDegree = 269;
     } else {
-        windDirrection = "NNW"
+        windDirrection = "NNW";
         rotationDegree = 291.5;
     }
 
@@ -425,14 +495,22 @@ function getAirQualityData() {
 
 function showAirQuality(response) {
     let airQualityIndexElement = document.querySelector("#air-quality-index");
-    let airQualityGaugeCircle = document.querySelector("#air-quality-gauge-circle");
+    let airQualityGaugeCircle = document.querySelector(
+        "#air-quality-gauge-circle"
+    );
 
     let maxAirQualityIndex = 5;
     let airQualityIndex = response.data.list[0].main.aqi;
     airQualityIndexElement.innerHTML = airQualityIndex;
 
     function defineQualityName(index) {
-        let qualityNames = ["Good", "Moderate", "Unhealthy for Sensitive Groups", "Unhealthy", "Very Unhealthy"];
+        let qualityNames = [
+            "Good",
+            "Moderate",
+            "Unhealthy for Sensitive Groups",
+            "Unhealthy",
+            "Very Unhealthy",
+        ];
         let airQualityNameElement = document.querySelector("#air-quality-name");
         let qualityNameIndex = [index - 1];
 
@@ -444,7 +522,7 @@ function showAirQuality(response) {
         let emojiElement = document.querySelector("#air-quality-emoji");
 
         if (index <= 2) {
-            emoji = "thums-up.svg"
+            emoji = "thums-up.svg";
         } else {
             emoji = "thums-down.svg";
         }
@@ -455,60 +533,69 @@ function showAirQuality(response) {
 
     defineQualityName(airQualityIndexElement.innerHTML);
     defineEmoji(airQualityIndexElement.innerHTML);
-    setVerticalGauge(airQualityIndexElement.innerHTML, maxAirQualityIndex, airQualityGaugeCircle);
+    setVerticalGauge(
+        airQualityIndexElement.innerHTML,
+        maxAirQualityIndex,
+        airQualityGaugeCircle
+    );
 }
 
 function checkForMissingIcon(iconName) {
     if (iconName === "04d") {
-        return iconName = "03d";
+        return (iconName = "03d");
     }
 
     if (iconName === "04n") {
-        return iconName = "03n";
+        return (iconName = "03n");
     }
 
     if (iconName === "10d") {
-        return iconName = "11d";
+        return (iconName = "11d");
     }
 
     if (iconName === "10n") {
-        return iconName = "11n";
+        return (iconName = "11n");
     }
     return false;
 }
 
 function formatDay(timestamp) {
-    let date = new Date(timestamp * 1000);
+    let date = new Date(convertTimestamp(timestamp));
     let days = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
     let dayIndex = date.getDay();
 
     return days[dayIndex];
 }
 
-function displayWeekForecast(response) {
+function getWeekForecast(response) {
+    console.log("week ok!");
     let forecast = response.data.daily;
     let weekForecastHtml;
-    let forecastInfoElement = document.querySelector("#forecast-info");
+    let forecastInfoElement = document.querySelector("#week-forecast-info");
 
-    weekForecastHtml = `<div id="period-weather-information-wrapper">`;
+    weekForecastHtml = `<div id="week-weather-information-wrapper">`;
 
     forecast.forEach((forecastDay, index) => {
         if (index < 7) {
             let iconName = forecastDay.weather[0].icon;
-            let weatherDescription = forecastDay.weather[0].description;
+            let alt = forecastDay.weather[0].description;
             let weekDay = forecastDay.dt;
             let maxTemperature = Math.round(forecastDay.temp.max);
             let minTemperature = Math.round(forecastDay.temp.min);
             if (checkForMissingIcon(iconName) !== false) {
                 iconName = checkForMissingIcon(iconName);
             }
-            weekForecastHtml =  weekForecastHtml + `
+            weekForecastHtml =
+                weekForecastHtml +
+                `
                                  <div class="part-of-period-information">
-                                     <div class="day sub-title">${formatDay(weekDay)}</div>
+                                     <div class="day sub-title">${formatDay(
+                                         weekDay
+                                     )}</div>
                                      <div class="icon">
                                      <img
                                           src="./img/icons/day/${iconName}.svg"
-                                          alt=""
+                                          alt="${alt}"
                                      />
                                      </div>
                                      <div class="temperature">
@@ -522,72 +609,64 @@ function displayWeekForecast(response) {
                                  </div>
             `;
         }
-    })
+    });
 
     weekForecastHtml = weekForecastHtml + `</div>`;
-
     forecastInfoElement.innerHTML = weekForecastHtml;
-    // for (let i = 0; i < numberOfItems; i++) {
-    //     let itemInfo = forecast[i];
-    //     let iconName = itemInfo.weather[0].icon;
-    //     let weatherDescription = itemInfo.weather[0].description;
-    //     let weekDay = itemInfo.dt;
-    //     let maxTemperature = Math.round(itemInfo.temp.max);
-    //     let minTemperature = Math.round(itemInfo.temp.min);
-    //     if (checkForMissingIcon(iconName) !== false) {
-    //         iconName = checkForMissingIcon(iconName);
-    //     }
-    //     console.log(iconName);
-    //     weekForecastHtml = `
-    //                                 <div class="part-of-period-information">
-    //                                 <div class="day sub-title">${weekDay}</div>
-    //                                 <span>${i}</span>
-    //                                 <div class="icon">
-    //                                     <img
-    //                                         src="./img/icons/day/${iconName}.svg"
-    //                                         alt=""
-    //                                     />
-    //                                 </div>
-    //                                 <div class="temperature">
-    //                                     <span class="temperature max main-text">
-    //                                         ${maxTemperature}°
-    //                                     </span>
-    //                                     <span class="temperature min main-text">
-    //                                         ${minTemperature}°
-    //                                     </span>
-    //                                 </div>
-    //                             </div>
-    //     `;
-    //     if (i>0) {
-    //         weekForecastHtml = weekForecastHtml + weekForecastHtml;
-    //     }
-    // }
-    // forecastWrapperElement.innerHTML = weekForecastHtml;
-
 }
 
+function getHourlyForecast(response) {
+    let forecast = response.data.hourly;
+    let hourlyForecastHtml;
+    let forecastInfoElement = document.querySelector("#hourly-forecast-info");
 
-function displayWeather(response) {
-    let currentWeatherIconElement = document.querySelector("#current-weather-icon");
-    getCurrentTemperature(response);
-    getCloudinessInfo(response);
-    getFeelsLikeInfo(response);
-    getUvi(response);
-    getWindStatus(response);
-    getSunriseSunsetTime(response);
-    getHumidity(response);
-    getVisibility(response);
-    getIcon(response, currentWeatherIconElement);
-    getAirQualityData();
-    displayWeekForecast(response);
+    hourlyForecastHtml = `<div id="hourly-weather-information-wrapper">`;
+
+    forecast.forEach((forecastHour, index) => {
+        if (index < 7) {
+            let date = new Date(convertTimestamp(forecastHour.dt));
+            let iconName = forecastHour.weather[0].icon;
+            let alt = forecastHour.weather[0].description;
+            let temperature = Math.round(forecastHour.temp);
+
+            if (index === 0) {
+                date = "Now";
+            } else {
+                date = formatTime24H(date);
+            }
+
+            if (checkForMissingIcon(iconName) !== false) {
+                iconName = checkForMissingIcon(iconName);
+            }
+
+            hourlyForecastHtml = hourlyForecastHtml + `
+                                 <div class="part-of-period-information">
+                                     <div class="day sub-title">${date}</div>
+                                     <div class="icon">
+                                     <img
+                                          src="./img/icons/day/${iconName}.svg"
+                                          alt="${alt}"
+                                     />
+                                     </div>
+                                     <div class="temperature">
+                                         <span class="temperature max main-text">
+                                            ${temperature}°
+                                         </span>
+                                     </div>
+                                 </div>
+            `;
+        }
+    });
+    hourlyForecastHtml = hourlyForecastHtml + `</div>`;
+
+    return (forecastInfoElement.innerHTML = hourlyForecastHtml);
 }
 
-
-// function displayWeekForecast() {
-//     displayWeekForecastItem();
-// }
 defineCoordinatesByCity("Hamburg");
-
+initForecastBtnListeners();
+initConvertBtnListeners();
+initCityFormListeners();
+initActiveClassListeners();
 
 // axios.get("https://restcountries.com/v3.1/alpha/de").then(response => console.log(response));
 // axios.get("https://api.unsplash.com/search/photos?query=kiev&client_id=qZUf4YHv469wMjMspUsOG_u6G2IXOPCEPV58jZFV4v4&order_by=relevant&content_filter=high&orientation=landscape").then(response => console.log(response));
@@ -602,6 +681,5 @@ defineCoordinatesByCity("Hamburg");
 // function showWeather(response) {
 //   let temperatute = response.data.main.temp;
 //   let h1Element = document.querySelector("h1");
-
 
 // axios.get(url).then(showWeather);
