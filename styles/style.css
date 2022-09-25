@@ -575,6 +575,7 @@ nav {
 .copyright {
     display: flex;
     align-items: center;
+    justify-content: center;
     margin-top: 10px;
     color: var(--black); 
     font-size: 13px;

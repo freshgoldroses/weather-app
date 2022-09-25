@@ -1,19 +1,26 @@
 let currentDate = new Date();
 let apiKey = "7518f0f6bd41461564c14628ba15ee3b";
 let units = "metric";
-let isFahrenheit = false;
+let isCelsius = true;
 let lat;
 let lng;
 let weatherDataUrl;
 let currentTemperature;
 
 let currentTemperatureElement = document.querySelector("#current-temperature");
-let currentTemperatureScale = document.querySelector(
-    "#current-temperature-scale"
-);
 
 let hourlyForecastInfoElement = document.querySelector("#hourly-forecast-info");
 let weekForecastInfoElement = document.querySelector("#week-forecast-info");
+
+function getTemperatureUnit() {
+    let currentTemperatureScale = document.querySelector("#current-temperature-scale");
+
+    if (isCelsius) {
+        return currentTemperatureScale.innerHTML = "°C";
+    } else {
+        return currentTemperatureScale.innerHTML = "°F";
+    }
+}
 
 function initForecastBtnListeners() {
     let hourlyForecastBtn = document.querySelector("#hourly-forecast");
@@ -63,14 +70,30 @@ function displayWeekForcast() {
 }
 
 function convertToCelsius() {
-    currentTemperatureElement.innerHTML = currentTemperature;
-    currentTemperatureScale.innerHTML = "°C";
+    if (isCelsius) return;
+    isCelsius = true;
+    getTemperatureUnit();
+    let city = document.querySelector("#city");
+    defineCoordinatesByCity(city.innerHTML);
 }
+const toFahrenheit = (temp) => (temp * 9) / 5 + 32;
 
 function convertToFahrenheit() {
-    let temperature = Math.round((currentTemperature * 9) / 5 + 32);
-    currentTemperatureElement.innerHTML = temperature;
-    currentTemperatureScale.innerHTML = "°F";
+    if (!isCelsius) return;
+    isCelsius = false;
+    getTemperatureUnit();
+    let currentTempElement = document.querySelector("#current-temperature");
+    let currentTemp = parseInt(currentTempElement.innerHTML);
+    currentTemp = Math.round(toFahrenheit(currentTemp));
+    currentTempElement.innerHTML = currentTemp;
+    
+
+    let temperatureElements = document.querySelectorAll(".temp");
+    for (let temperatureElement of temperatureElements) {
+        let celsiusTemp = parseInt(temperatureElement.innerHTML);
+        let fahrenheitTemp = toFahrenheit(celsiusTemp);
+        temperatureElement.innerHTML = `${Math.round(fahrenheitTemp)}°`;
+    }
 }
 
 function hideGaugeNumber(gauge, value) {
@@ -203,7 +226,7 @@ function showCurrentDate() {
     currentTime.innerHTML = `${time}`;
 }
 
-showCurrentDate();
+
 
 function getCurrentPosition() {
     navigator.geolocation.getCurrentPosition(generateLink);
@@ -222,7 +245,7 @@ function handleSubmit(event) {
     let searchCityInput = document.querySelector("#search-city-input");
     let city = searchCityInput.value;
 
-    defineCoordinatesByCity(city);
+    defineCoordinatesByCity(city || "Hamburg");
     searchCityInput.value = "";
 }
 
@@ -284,10 +307,14 @@ function displayWeather(response) {
     getHourlyForecast(response);
 }
 
+// +смену ед системы измерения
+// 
+
 function getCurrentTemperature(response) {
     let temperatureElement = document.querySelector("#current-temperature");
     currentTemperature = Math.round(response.data.current.temp);
     temperatureElement.innerHTML = currentTemperature;
+    getTemperatureUnit()    
 }
 
 function getCloudinessInfo(response) {
@@ -299,7 +326,7 @@ function getCloudinessInfo(response) {
 function getFeelsLikeInfo(response) {
     let feelsLikeElement = document.querySelector("#feels-like");
     let feelsLikeTemperature = Math.round(response.data.current.feels_like);
-    feelsLikeElement.innerHTML = `Feels like ${feelsLikeTemperature}°`;
+    feelsLikeElement.innerHTML = ` ${feelsLikeTemperature}°`;
 }
 
 function getUvi(response) {
@@ -568,7 +595,6 @@ function formatDay(timestamp) {
 }
 
 function getWeekForecast(response) {
-    console.log("week ok!");
     let forecast = response.data.daily;
     let weekForecastHtml;
     let forecastInfoElement = document.querySelector("#week-forecast-info");
@@ -599,10 +625,11 @@ function getWeekForecast(response) {
                                      />
                                      </div>
                                      <div class="temperature">
-                                     <span class="temperature max main-text">
+                                     <span class="temperature temp max main-text">
                                         ${maxTemperature}°
                                      </span>
-                                     <span class="temperature min main-text">
+                                     
+                                     <span class="temperature temp min main-text">
                                          ${minTemperature}°
                                      </span>
                                      </div>
@@ -649,7 +676,7 @@ function getHourlyForecast(response) {
                                      />
                                      </div>
                                      <div class="temperature">
-                                         <span class="temperature max main-text">
+                                         <span class="temperature temp max main-text">
                                             ${temperature}°
                                          </span>
                                      </div>
@@ -662,7 +689,9 @@ function getHourlyForecast(response) {
     return (forecastInfoElement.innerHTML = hourlyForecastHtml);
 }
 
+showCurrentDate();
 defineCoordinatesByCity("Hamburg");
+initCurrentLocationListener();
 initForecastBtnListeners();
 initConvertBtnListeners();
 initCityFormListeners();
